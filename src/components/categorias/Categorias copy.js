@@ -4,7 +4,7 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { useState } from 'react';
 
 import { Pergunta } from '../pergunta/Pergunta';
-import { CategoriaIcone } from '../categoria/Categoria'
+import {CategoriaIcone} from '../categoria/Categoria'
 
 export function Categorias() {
     const [perguntas, setPerguntas] = useState({
@@ -14,7 +14,7 @@ export function Categorias() {
 
     const [color, setColor] = useState('white')
 
-    
+
 
     function Coluna({ droppableId }) {
         return (
@@ -26,29 +26,14 @@ export function Categorias() {
                             {...provided.droppableProps}
                             ref={provided.innerRef}
                         >
-                            <Catitem />
+                            {perguntas[droppableId].map((item, index) => (
+                                <Peritem key={item.id} item={item} col={droppableId} index={index} />
+                            ))}
                             {provided.placeholder}
                         </div>
                     )}
                 </Droppable>
             </div>
-        )
-    }
-
-    function Catitem({ item, index, col }) {
-        return (
-            <Draggable key={item.id} draggableId={item.id} index={index}>
-                {(provided) => (
-                    <div
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-
-                    >
-                        <CategoriaIcone idPergunta={item.id} state={perguntas[col][index].data} col={col} updatePergunta={updatePergunta} deleteHandler={() => deletePergunta(item.id, col)} />
-                    </div>
-                )}
-            </Draggable>
         )
     }
 
@@ -154,7 +139,12 @@ export function Categorias() {
             <h1 onInput={handleOnChange} style={{ backgroundColor: color }} suppressContentEditableWarning={true} contentEditable="true">Perguntas frequentes</h1>
 
             <div >
-
+                <DragDropContext onDragEnd={onDragEnd}>
+                    <div className='fom'>
+                        <Coluna droppableId={'col1'} key={'col1'} />
+                        <Coluna droppableId={'col2'} key={'col2'} />
+                    </div>
+                </DragDropContext>
             </div>
         </>
     )

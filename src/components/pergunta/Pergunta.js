@@ -1,6 +1,7 @@
 import './styles.css'
 
 import { useState } from 'react';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 export function Pergunta({ idPergunta, col, deleteHandler, updatePergunta, state }) {
 
@@ -49,3 +50,17 @@ export function Pergunta({ idPergunta, col, deleteHandler, updatePergunta, state
         </div>
     )
 }
+
+<Droppable droppableId={droppableId} key={droppableId}>
+{(provided) => (
+    <div className='col'
+        {...provided.droppableProps}
+        ref={provided.innerRef}
+    >
+        {perguntas[droppableId].map((item, index) => (
+            <Peritem key={item.id} item={item} col={droppableId} index={index} />
+        ))}
+        {provided.placeholder}
+    </div>
+)}
+</Droppable>

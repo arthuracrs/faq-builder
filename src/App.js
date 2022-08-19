@@ -1,11 +1,12 @@
 import './styles.css'
 
-import { Categorias } from './components/categorias/Categorias';
+import { ListaDeCategorias } from './components/listaDeCategorias/listaDeCategorias';
+import { Categoria } from './components/categoria/Categoria';
 
 export function App() {
     return (
         <>
-            <Categorias/>
+            <ListaDeCategorias />
         </>
     )
 

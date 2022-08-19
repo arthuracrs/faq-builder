@@ -1,0 +1,10 @@
+.listaDeCategoria h1 {
+    padding: 10px;
+    font-family: sans-serif;
+    color: rgb(36, 32, 107);
+}
+
+.listaDeCategoria .linhaDeColunas{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
