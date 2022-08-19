@@ -3,7 +3,7 @@ import './styles.css'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { useState } from 'react';
 
-import { Pergunta } from '../pergunta/Pergunta';
+import { Pergunta } from '../../pergunta/Pergunta';
 
 export function Categoria() {
     const [perguntas, setPerguntas] = useState([{ id: crypto.randomUUID() }]);

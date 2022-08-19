@@ -1,12 +1,11 @@
 import './styles.css'
 
-import { Pergunta } from './components/pergunta/Pergunta';
-import { Categoria } from './components/categoria/Categoria';
+import { Categorias } from './components/categorias/Categorias';
 
 export function App() {
     return (
         <>
-            <Categoria/>
+            <Categorias/>
         </>
     )
 
