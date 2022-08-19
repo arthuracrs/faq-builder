@@ -4,3 +4,16 @@
     color: rgb(36, 32, 107);
 
 }
+
+.l1{
+    background-color: brown;
+}
+
+.l2 {
+    background-color: rgb(36, 32, 107);
+}
+
+.fom{
+    flex-direction: row;
+    display: flex;
+}
