@@ -44,7 +44,6 @@ export function ListaDeCategorias() {
                         {...provided.droppableProps}
                         ref={provided.innerRef}
                     >
-                        {console.log(colunas)}
                         {colunas[getColunaIndex(droppableId)].data.map(
                             (icone, index) => (
                                 <IconeDeCategoria key={icone.id} index={index} id={icone.id} />
@@ -61,7 +60,7 @@ export function ListaDeCategorias() {
         return (
             <Draggable draggableId={id} index={index}>
                 {(provided) => (
-                    <div
+                    <div className='iconeDeCategoria'
                         ref={provided.innerRef}
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}

@@ -6,5 +6,15 @@
 
 .listaDeCategoria .linhaDeColunas{
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    grid-auto-flow: column;
+}
+
+.iconeDeCategoria{
+    width: 500px;
+    background-color: yellowgreen;
+}
+
+.iconeDeCategoria h2{
+    background-color: yellowgreen;
 }
