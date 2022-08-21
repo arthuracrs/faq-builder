@@ -3,74 +3,30 @@ import { createContext, useState } from "react";
 export const StateContext = createContext({})
 
 const newId = () => crypto.randomUUID()
-const copyObj = (obj) => JSON.parse(JSON.stringify(obj))
 
-class Categoria {
-    idCategoria
-    categoria
-    perguntas
-
-    constructor(titulo) {
-        this.idCategoria = newId()
-        this.categoria = titulo
-        this.perguntas = []
+const categoriaFactory = (categoria) => {
+    return {
+        idCategoria: newId(),
+        categoria: categoria,
+        perguntas: []
     }
+}
 
-    addPergunta(pergunta) {
-        this.perguntas.push(pergunta)
-    }
-
-    reorderPerguntas(startIndex, endIndex) {
-        const [removed] = this.perguntas.splice(startIndex, 1);
-        this.perguntas.splice(endIndex, 0, removed);
-    }
-
-    toJson() {
-        return {
-            idCategoria: this.idCategoria,
-            categoria: this.categoria,
-            perguntas: this.perguntas
+const perguntaFactory = (titulo) => {
+    return {
+        idPergunta: newId(),
+        titulo: titulo,
+        resposta: {
+            idResposta: newId(),
+            texto: "Se colou errado ou precisa substituir o adesivo (tag), você precisa fazer o bloqueio do antigo e pedir um novo. Acesse “Meus adesivos” e clique em “Solicitar adesivos”."
         }
     }
 }
 
-class Pergunta {
-    idPergunta
-    titulo
-    resposta
-
-    constructor(titulo) {
-        this.idPergunta = newId()
-        this.titulo = titulo
-        this.resposta = {}
-    }
-
-    addResposta(resposta) {
-        this.resposta = resposta
-    }
-
-    toJson() {
-        return {
-            idPergunta: this.idPergunta,
-            titulo: this.titulo,
-            resposta: this.resposta
-        }
-    }
-}
-
-class Resposta {
-    idResposta
-    texto
-    constructor(texto) {
-        this.idResposta = newId()
-        this.texto = texto
-    }
-
-    toJson() {
-        return {
-            idResposta: this.idResposta,
-            texto: this.texto
-        }
+const respostaFactory = (texto) => {
+    return {
+        idResposta: newId(),
+        texto: texto
     }
 }
 
@@ -80,24 +36,31 @@ export const StateProvider = (props) => {
         colunas: [{
             idColuna: newId(),
             categorias: [
-                new Categoria('Sobre o adesivo'),
-                new Categoria('Sua conta')
+                categoriaFactory('Sobre o adesivo'),
+                categoriaFactory('Sua conta')
             ]
-        }]
+        },
+        {
+            idColuna: newId(),
+            categorias: [
+                categoriaFactory('Sobre o adesivo'),
+                categoriaFactory('Sua conta')
+            ]
+        }
+        ]
     })
 
-    const pergunta1 = new Pergunta('como é q faz aquilo?')
-    pergunta1.addResposta(new Resposta('ooddodo'))
+    const pergunta1 = perguntaFactory('como é q faz aquilo?')
+    pergunta1.resposta = respostaFactory('ooddodo')
 
-    const pergunta2 = new Pergunta('caaaaaaaaaaaaaa')
-    pergunta2.addResposta(new Resposta('bbbbbbbb'))
-    
-    stateGlobal.colunas[0].categorias[0].addPergunta(pergunta1)
-    stateGlobal.colunas[0].categorias[0].addPergunta(pergunta2)
+    const pergunta2 = perguntaFactory('caaaaaaaaaaaaaa')
+    pergunta2.resposta = respostaFactory('bbbbbbbb')
+
+    stateGlobal.colunas[0].categorias[0].perguntas.push(pergunta1)
+    stateGlobal.colunas[0].categorias[0].perguntas.push(pergunta2)
 
     const getColunaIndex = (idColuna) => {
-        const newStateGlobal = copyObj(stateGlobal)
-        const colunas = newStateGlobal.colunas
+        const colunas = stateGlobal.colunas
 
         for (let i = 0; i < colunas.length; i++)
             if (colunas[i].idColuna === idColuna)
@@ -107,8 +70,7 @@ export const StateProvider = (props) => {
     }
 
     const getCategoriaIndex = (idColuna, idCategoria) => {
-        const newStateGlobal = copyObj(stateGlobal)
-        const colunas = newStateGlobal.colunas
+        const colunas = stateGlobal.colunas
 
         for (let i = 0; i < colunas.length; i++)
             if (colunas[i].idColuna === idColuna)

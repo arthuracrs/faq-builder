@@ -12,22 +12,19 @@ export function ListaDeCategorias() {
     const [colunas, setColunas] = useState(stateGlobal.colunas)
 
     function IconeDeCategoria({ index, idCategoria, idColuna }) {
-
-        const copyObj = (obj) => JSON.parse(JSON.stringify(obj))
         const currentCategoria = stateGlobal.colunas[getColunaIndex(idColuna)].categorias[getCategoriaIndex(idColuna, idCategoria)]
-        const [content, setContent] = useState(currentCategoria)
+        const [iconeDeCategoria, setIconeDeCategoria] = useState(currentCategoria)
         const [color, setColor] = useState('white')
 
         const handleOnChange = (event) => {
             if (event.target.innerHTML == '') {
                 setColor('#c06572')
             } else {
-                let newContent = copyObj(content)
-                newContent[event.target.id] = event.target.innerText
+                iconeDeCategoria[event.target.id] = event.target.innerText
 
-                setContent(newContent)
+                setIconeDeCategoria(iconeDeCategoria)
                 setColor('white')
-                updateCategoria(idColuna, idCategoria, newContent)
+                updateCategoria(idColuna, idCategoria, iconeDeCategoria)
             }
         }
 
@@ -43,7 +40,6 @@ export function ListaDeCategorias() {
 
         return (
             <Draggable draggableId={idCategoria} index={index}>
-
                 {(provided) => (
                     <div className='iconeDeCategoria'
                         ref={provided.innerRef}
@@ -54,7 +50,7 @@ export function ListaDeCategorias() {
                             <img src={iconeImage} />
                         </Link>
                         <h2 id="categoria" style={{ backgroundColor: color }} onInput={processChange} suppressContentEditableWarning={true} contentEditable="true">
-                            {content.categoria}
+                            {iconeDeCategoria.categoria}
                         </h2>
                     </div>
                 )}
@@ -73,7 +69,6 @@ export function ListaDeCategorias() {
                         {colunas[getColunaIndex(droppableId)].categorias.map(
                             (icone, index) => (
                                 <IconeDeCategoria key={icone.idCategoria} index={index} idCategoria={icone.idCategoria} idColuna={droppableId} />
-                                // <h1>icone de categoria</h1>
                             ))
                         }
                         {provided.placeholder}
@@ -84,8 +79,6 @@ export function ListaDeCategorias() {
     }
 
     const onDragEnd = result => {
-
-        const copyObj = (obj) => JSON.parse(JSON.stringify(obj))
 
         const reorder = (list, startIndex, endIndex) => {
             const result = list
@@ -105,32 +98,23 @@ export function ListaDeCategorias() {
             const mesmaPosicao = destination.index === source.index
             if (mesmaPosicao) return
 
-            let tempColunas = copyObj(colunas)
+            let targetColumn = colunas[getColunaIndex(source.droppableId)]
 
-            let targetColumn = tempColunas[getColunaIndex(source.droppableId)]
-
-            let novaColuna = reorder(
+            reorder(
                 targetColumn.categorias,
                 source.index,
                 destination.index
-            );
+            )
 
-            targetColumn.categorias = novaColuna
-
-            setColunas(tempColunas)
+            setColunas(colunas)
         } else {
-            let tempColunas = copyObj(colunas)
-
-            const sourceColumn = tempColunas[getColunaIndex(source.droppableId)].data
-            const destinationColumn = tempColunas[getColunaIndex(destination.droppableId)].data
+            const sourceColumn = colunas[getColunaIndex(source.droppableId)].categorias
+            const destinationColumn = colunas[getColunaIndex(destination.droppableId)].categorias
 
             const [removed] = sourceColumn.splice(source.index, 1);
             destinationColumn.splice(destination.index, 0, removed);
 
-            tempColunas[source.droppableId] = sourceColumn
-            tempColunas[destination.droppableId] = destinationColumn
-
-            setColunas(tempColunas)
+            setColunas(colunas)
         }
     }
     console.log(stateGlobal)

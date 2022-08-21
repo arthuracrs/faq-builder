@@ -17,17 +17,14 @@ export function Pergunta({ state, index }) {
         setStateGlobal(newStateGlobal)
     }, [pergunta])
 
-    const copyObj = (obj) => JSON.parse(JSON.stringify(obj))
-
     const handleOnChange = (event) => {
 
         if (event.target.innerHTML === '')
             setColor('#c06572')
         else {
-            let newPergunta = copyObj(pergunta)
-            newPergunta[event.target.id] = event.target.innerText
+            pergunta[event.target.id] = event.target.innerText
 
-            setPergunta(newPergunta)
+            setPergunta(pergunta)
             setColor('white')
         }
         event.target.blur()
