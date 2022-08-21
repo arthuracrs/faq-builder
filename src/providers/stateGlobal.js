@@ -40,13 +40,13 @@ export const StateProvider = (props) => {
                 categoriaFactory('Sua conta')
             ]
         },
-        {
-            idColuna: newId(),
-            categorias: [
-                categoriaFactory('Sobre o adesivo'),
-                categoriaFactory('Sua conta')
-            ]
-        }
+            {
+                idColuna: newId(),
+                categorias: [
+                    categoriaFactory('Sobre o adesivo'),
+                    categoriaFactory('Sua conta')
+                ]
+            }
         ]
     })
 
@@ -77,6 +77,7 @@ export const StateProvider = (props) => {
                 for (let j = 0; j < colunas[i].categorias.length; j++)
                     if (colunas[i].categorias[j].idCategoria == idCategoria)
                         return j
+        console.log('categoria ' + idCategoria + ' n existe na coluna: ' +idColuna)
 
         return null
     }
@@ -99,7 +100,7 @@ export const StateProvider = (props) => {
     }
 
     return (
-        <StateContext.Provider value={{ stateGlobal, getColunaIndex: getColunaIndex, getCategoriaIndex, setStateGlobal, updateCategoria }} s>
+        <StateContext.Provider value={{ stateGlobal, getColunaIndex, getCategoriaIndex, setStateGlobal, updateCategoria }}>
             {props.children}
         </StateContext.Provider>
     )

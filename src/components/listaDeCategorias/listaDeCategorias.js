@@ -8,13 +8,18 @@ import { Link } from "react-router-dom";
 import { StateContext } from '../../providers/stateGlobal';
 
 export function ListaDeCategorias() {
-    const { stateGlobal, updateCategoria, getColunaIndex, getCategoriaIndex } = useContext(StateContext)
+    const { stateGlobal, setStateGlobal, getColunaIndex, getCategoriaIndex } = useContext(StateContext)
     const [colunas, setColunas] = useState(stateGlobal.colunas)
 
     function IconeDeCategoria({ index, idCategoria, idColuna }) {
         const currentCategoria = stateGlobal.colunas[getColunaIndex(idColuna)].categorias[getCategoriaIndex(idColuna, idCategoria)]
         const [iconeDeCategoria, setIconeDeCategoria] = useState(currentCategoria)
         const [color, setColor] = useState('white')
+
+        useEffect(() => {
+            stateGlobal.colunas[getColunaIndex(idColuna)].categorias[getCategoriaIndex(idColuna, idCategoria)].categoria = iconeDeCategoria.categoria
+            setStateGlobal(stateGlobal)
+        }, [iconeDeCategoria])
 
         const handleOnChange = (event) => {
             if (event.target.innerHTML == '') {
@@ -24,7 +29,6 @@ export function ListaDeCategorias() {
 
                 setIconeDeCategoria(iconeDeCategoria)
                 setColor('white')
-                updateCategoria(idColuna, idCategoria, iconeDeCategoria)
             }
         }
 
