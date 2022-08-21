@@ -24,8 +24,6 @@ export function Categoria({ state }) {
         newPergunta(),
         newPergunta()
     ])
-    const [color, setColor] = useState('white')
-    console.log(perguntas)
 
     const getPerguntaIndex = (id) => {
         for (let i = 0; i < perguntas.length; i++)
