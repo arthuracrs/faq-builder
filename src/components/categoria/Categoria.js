@@ -17,9 +17,8 @@ export function Categoria() {
     const [categoria, setCategoria] = useState(currentCategoria)
 
     useEffect(()=>{
-        const newStateGlobal = stateGlobal
-        newStateGlobal.colunas[indexColuna].categorias[indexCategoria] = categoria
-        setStateGlobal(newStateGlobal)
+        stateGlobal.colunas[indexColuna].categorias[indexCategoria] = categoria
+        setStateGlobal(stateGlobal)
     }, [categoria])
 
     const onDragEnd = result => {

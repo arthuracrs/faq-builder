@@ -12,9 +12,8 @@ export function Pergunta({ state, index }) {
     const [color, setColor] = useState('white')
 
     useEffect(() => {
-        const newStateGlobal = stateGlobal
-        newStateGlobal.colunas[indexColuna].categorias[indexCategoria].perguntas[index] = pergunta
-        setStateGlobal(newStateGlobal)
+        stateGlobal.colunas[indexColuna].categorias[indexCategoria].perguntas[index] = pergunta
+        setStateGlobal(stateGlobal)
     }, [pergunta])
 
     const handleOnChange = (event) => {
@@ -22,7 +21,11 @@ export function Pergunta({ state, index }) {
         if (event.target.innerHTML === '')
             setColor('#c06572')
         else {
-            pergunta[event.target.id] = event.target.innerText
+            if(event.target.id == 'texto'){
+                pergunta.resposta.texto = event.target.innerText
+            }else{
+                pergunta.titulo = event.target.innerText
+            }
 
             setPergunta(pergunta)
             setColor('white')
