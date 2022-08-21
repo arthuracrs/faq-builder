@@ -13,24 +13,36 @@ export function ListaDeCategorias() {
         return null
     }
 
+    const getIconeIndex = (idColuna, idIcone) => {
+        for (const coluna in colunas)
+            if (colunas[coluna].id === idColuna)
+                for (const icone in colunas[coluna].data) 
+                    if (colunas[coluna].data[icone].id === idIcone) 
+                        return icone
+
+        return null
+    }
+
     const newId = () => crypto.randomUUID()
+
+    const newIcone = () => ({ id: newId(), data: {} })
 
     const [colunas, setColunas] = useState(
         [
             {
                 id: newId(),
                 data: [
-                    { id: newId() },
-                    { id: newId() },
-                    { id: newId() }
+                    newIcone(),
+                    newIcone(),
+                    newIcone()
                 ]
             },
             {
                 id: newId(),
                 data: [
-                    { id: newId() },
-                    { id: newId() },
-                    { id: newId() }
+                    newIcone(),
+                    newIcone(),
+                    newIcone()
                 ]
             }
         ]
@@ -40,13 +52,13 @@ export function ListaDeCategorias() {
         return (
             <Droppable droppableId={droppableId} key={droppableId}>
                 {(provided) => (
-                    <div 
+                    <div
                         {...provided.droppableProps}
                         ref={provided.innerRef}
                     >
                         {colunas[getColunaIndex(droppableId)].data.map(
                             (icone, index) => (
-                                <IconeDeCategoria key={icone.id} index={index} id={icone.id} />
+                                <IconeDeCategoria state={colunas[getColunaIndex(droppableId)].data[getIconeIndex(droppableId, icone.id)].data} updateIconeData={updateIconeData} key={icone.id} index={index} id={icone.id} idColuna={droppableId} />
                             ))
                         }
                         {provided.placeholder}
@@ -56,7 +68,50 @@ export function ListaDeCategorias() {
         )
     }
 
-    function IconeDeCategoria({ index, id }) {
+    const updateIconeData = (idIcone, idColuna, newData) => {
+        const copyObj = (obj) => JSON.parse(JSON.stringify(obj))
+
+        let newColunas = copyObj(colunas)
+
+        console.log(getIconeIndex(idColuna, idIcone))
+
+        newColunas[getColunaIndex(idColuna)].data[getIconeIndex(idColuna, idIcone)].data = newData
+
+        setColunas(newColunas)
+    }
+
+    function IconeDeCategoria({ index, id, state, updateIconeData, idColuna }) {
+
+        const copyObj = (obj) => JSON.parse(JSON.stringify(obj))
+
+        const [content, setContent] = useState(state)
+        const [color, setColor] = useState('white')
+
+        const handleOnChange = (event) => {
+
+            if (event.target.innerHTML == '') {
+                setColor('#c06572')
+                console.log('fom')
+            }
+            else {
+                let newContent = copyObj(content)
+                newContent[event.target.id] = event.target.innerText
+                setContent(newContent)
+                setColor('white')
+                updateIconeData(id, idColuna, newContent)
+            }
+        }
+
+        const debounce = (func, timeout = 700) => {
+            let timer;
+            return (...args) => {
+                clearTimeout(timer);
+                timer = setTimeout(() => { func.apply(this, args); }, timeout);
+            };
+        }
+
+        const processChange = debounce((e) => handleOnChange(e));
+
         return (
             <Draggable draggableId={id} index={index}>
                 {(provided) => (
@@ -66,7 +121,9 @@ export function ListaDeCategorias() {
                         {...provided.dragHandleProps}
                     >
                         <img src={iconeImage} />
-                        <h2>{id}</h2>
+                        <h2 id="titulo" style={{ backgroundColor: color }} onInput={processChange} suppressContentEditableWarning={true} contentEditable="true">
+                            {content?.titulo || "Titulo da pergunta"}
+                        </h2>
                     </div>
                 )}
             </Draggable>
