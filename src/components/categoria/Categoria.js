@@ -7,9 +7,7 @@ import { Pergunta } from '../pergunta/Pergunta';
 
 export function Categoria({ state }) {
 
-    function copyObj(obj) {
-        return JSON.parse(JSON.stringify(obj))
-    }
+    const copyObj = (obj) => JSON.parse(JSON.stringify(obj))
 
     const newId = () => crypto.randomUUID()
 
@@ -17,24 +15,29 @@ export function Categoria({ state }) {
         let state = {}
 
         for (let i = 0; i < numItems; i++)
-            state[newId()] = { titulo: 'fom' };
+            state[newId()] = { titulo: 'fom', texto: 'Mussum Ipsum, cacilds vidis litro abertis. Suco de cevadiss, é um leite divinis, qui tem lupuliz, matis, aguis e fermentis.Manduma pindureta quium dia nois paga.Viva Forevis aptent taciti sociosqu ad litora torquent.Em pé sem cair, deitado sem dormir, sentado sem cochilar e fazendo pose.' };
 
         return state
     }
 
-    const [content, setContent] = useState(populateState(4))
-
+    const [perguntas, setPerguntas] = useState(populateState(4))
     const [color, setColor] = useState('white')
-    console.log(content)
+    console.log(perguntas)
 
-    
+    const updatePergunta = (idPergunta, content) => {
+        let newPerguntas = copyObj(perguntas)
+        
+        newPerguntas[idPergunta] = content
+
+        setPerguntas(newPerguntas)
+    }
 
     return (
         <div className='categoriaIcone' >
             <h1>Titulo da Categoria</h1>
             <div>
-                {Object.keys(content).map((x, index) => (
-                    <Pergunta />
+                {Object.keys(perguntas).map((x, index) => (
+                    <Pergunta idPergunta={x} updatePergunta={updatePergunta} key={x} state={perguntas[x]} />
                 ))}
             </div>
         </div>
