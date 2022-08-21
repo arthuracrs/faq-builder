@@ -8,26 +8,33 @@ import { StateContext } from '../../providers/stateGlobal';
 
 export function Categoria() {
     const copyObj = (obj) => JSON.parse(JSON.stringify(obj))
+
     const { indexColuna, indexCategoria } = useParams();
-    const { stateGlobal, updateCategoria } = useContext(StateContext)
+    const { stateGlobal,  setStateGlobal,updateCategoria } = useContext(StateContext)
     const [color, setColor] = useState('white')
-    
+
     const currentCategoria = stateGlobal.colunas[indexColuna].categorias[indexCategoria]
-    const [perguntas, setPerguntas] = useState(currentCategoria.perguntas)
+    const [categoria, setCategoria] = useState(currentCategoria)
 
-    const getPerguntaIndex = (id) => {
-        for (let i = 0; i < perguntas.length; i++)
-            if (perguntas[i].id === id) return i
-
-        return undefined
-    }
+    useEffect(()=>{
+        const newStateGlobal = stateGlobal
+        newStateGlobal.colunas[indexColuna].categorias[indexCategoria] = categoria
+        setStateGlobal(newStateGlobal)
+    }, [categoria])
 
     const updatePergunta = (idPergunta, content) => {
-        let newPerguntas = copyObj(perguntas)
+        const getPerguntaIndex = (array, id) => {
+            for (let i = 0; i < array.length; i++)
+                if (array[i].idPergunta === id) return i
 
-        newPerguntas[getPerguntaIndex(idPergunta)].data = content
+            return undefined
+        }
 
-        setPerguntas(newPerguntas)
+        let newCategoria = copyObj(categoria)
+
+        newCategoria.perguntas[getPerguntaIndex(categoria.perguntas, idPergunta)] = content
+
+        setCategoria(newCategoria)
     }
 
     const onDragEnd = result => {
@@ -48,22 +55,22 @@ export function Categoria() {
         const mesmaPosicao = destination.index === source.index
         if (mesmaPosicao) return
 
-        let newPerguntas = copyObj(perguntas)
+        let newCategoria = copyObj(categoria)
 
-        newPerguntas = reorder(
-            newPerguntas,
+        reorder(
+            newCategoria.perguntas,
             source.index,
             destination.index
         );
 
-        setPerguntas(newPerguntas)
+        setCategoria(newCategoria)
     }
 
     function Pergunta({ idPergunta, updatePergunta, state }) {
 
         const copyObj = (obj) => JSON.parse(JSON.stringify(obj))
 
-        const [content, setContent] = useState(state)
+        const [pergunta, setPergunta] = useState(state)
         const [color, setColor] = useState('white')
 
         const handleOnChange = (event) => {
@@ -71,12 +78,12 @@ export function Categoria() {
             if (event.target.innerHTML === '')
                 setColor('#c06572')
             else {
-                let newContent = copyObj(content)
-                newContent[event.target.id] = event.target.innerText
+                let newPergunta = copyObj(pergunta)
+                newPergunta[event.target.id] = event.target.innerText
 
-                setContent(newContent)
+                setPergunta(newPergunta)
                 setColor('white')
-                updatePergunta(idPergunta, newContent)
+                updatePergunta(idPergunta, newPergunta)
             }
         }
 
@@ -93,17 +100,16 @@ export function Categoria() {
         return (
             <div className='pergunta' style={{ backgroundColor: color }}   >
                 <h2 id="titulo" onInput={processChange} suppressContentEditableWarning={true} contentEditable="true">
-                    {content.titulo}
+                    {pergunta.titulo}
                 </h2>
                 <p id="texto" onInput={processChange} suppressContentEditableWarning={true} contentEditable="true">
-                    {content.texto}
+                    {pergunta.resposta.texto}
                 </p>
             </div>
         )
     }
 
     const handleOnChange = (event) => {
-        { stateGlobal.colunas[0].categorias[0].data.titulo }
         if (event.target.innerHTML === '')
             setColor('#c06572')
         else {
@@ -121,7 +127,7 @@ export function Categoria() {
     }
 
     const processChange = debounce((e) => handleOnChange(e));
-
+ 
     return (
         <div>
             <h1 onInput={processChange} suppressContentEditableWarning={true} contentEditable="true">
@@ -134,9 +140,9 @@ export function Categoria() {
                             {...provided.droppableProps}
                             ref={provided.innerRef}
                         >
-                            {perguntas.map((x, index) => (
+                            {categoria.perguntas.map((x, index) => (
 
-                                <Draggable draggableId={x.id} index={index} key={x.id}>
+                                <Draggable draggableId={x.idPergunta} index={index} key={x.idPergunta}>
                                     {(provided) => (
                                         <div
                                             className='pergunta'
@@ -144,7 +150,7 @@ export function Categoria() {
                                             {...provided.draggableProps}
                                             {...provided.dragHandleProps}
                                         >
-                                            <Pergunta idPergunta={x.id} updatePergunta={updatePergunta} key={x.id} state={x.data} />
+                                            <Pergunta idPergunta={x.idPergunta} updatePergunta={updatePergunta} key={x.idPergunta} state={x} />
                                         </div>
                                     )}
                                 </Draggable>

@@ -86,6 +86,15 @@ export const StateProvider = (props) => {
         }]
     })
 
+    const pergunta1 = new Pergunta('como é q faz aquilo?')
+    pergunta1.addResposta(new Resposta('ooddodo'))
+
+    const pergunta2 = new Pergunta('caaaaaaaaaaaaaa')
+    pergunta2.addResposta(new Resposta('bbbbbbbb'))
+    
+    stateGlobal.colunas[0].categorias[0].addPergunta(pergunta1)
+    stateGlobal.colunas[0].categorias[0].addPergunta(pergunta2)
+
     const getColunaIndex = (idColuna) => {
         const newStateGlobal = copyObj(stateGlobal)
         const colunas = newStateGlobal.colunas
