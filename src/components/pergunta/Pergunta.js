@@ -6,7 +6,6 @@ export function Pergunta({ idPergunta, updatePergunta, state }) {
 
     const copyObj = (obj) => JSON.parse(JSON.stringify(obj))
 
-    const [k, setK] = useState(false)
     const [content, setContent] = useState(state)
     const [color, setColor] = useState('white')
 
