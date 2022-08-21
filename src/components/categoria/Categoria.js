@@ -1,29 +1,19 @@
 import './styles.css'
 
-import { useState } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { useParams } from "react-router-dom";
 
-// import { Pergunta } from '../pergunta/Pergunta';
+import { StateContext } from '../../providers/stateGlobal';
 
-export function Categoria({ state }) {
-
+export function Categoria() {
     const copyObj = (obj) => JSON.parse(JSON.stringify(obj))
-
-    const newId = () => crypto.randomUUID()
-
-    const newPergunta = () => ({
-        id: newId(),
-        data: {
-            titulo: 'Titulo da Pergunta',
-            texto: 'Mussum Ipsum, cacilds vidis litro abertis. Casamentiss faiz malandris se pirulitá.Nullam volutpat risus nec leo commodo, ut interdum diam laoreet. Sed non consequat odio.Mé faiz elementum girarzis, nisi eros vermeio.Tá deprimidis, eu conheço uma cachacis que pode alegrar sua vidis.'
-        }
-    })
-
-    const [perguntas, setPerguntas] = useState([
-        newPergunta(),
-        newPergunta(),
-        newPergunta()
-    ])
+    const { indexColuna, indexCategoria } = useParams();
+    const { stateGlobal, updateCategoria } = useContext(StateContext)
+    const [color, setColor] = useState('white')
+    
+    const currentCategoria = stateGlobal.colunas[indexColuna].categorias[indexCategoria]
+    const [perguntas, setPerguntas] = useState(currentCategoria.perguntas)
 
     const getPerguntaIndex = (id) => {
         for (let i = 0; i < perguntas.length; i++)
@@ -41,8 +31,6 @@ export function Categoria({ state }) {
     }
 
     const onDragEnd = result => {
-
-        const copyObj = (obj) => JSON.parse(JSON.stringify(obj))
 
         const reorder = (list, startIndex, endIndex) => {
             const result = list
@@ -69,7 +57,6 @@ export function Categoria({ state }) {
         );
 
         setPerguntas(newPerguntas)
-
     }
 
     function Pergunta({ idPergunta, updatePergunta, state }) {
@@ -79,7 +66,7 @@ export function Categoria({ state }) {
         const [content, setContent] = useState(state)
         const [color, setColor] = useState('white')
 
-        function handleOnChange(event) {
+        const handleOnChange = (event) => {
 
             if (event.target.innerHTML === '')
                 setColor('#c06572')
@@ -93,7 +80,7 @@ export function Categoria({ state }) {
             }
         }
 
-        function debounce(func, timeout = 700) {
+        const debounce = (func, timeout = 700) => {
             let timer;
             return (...args) => {
                 clearTimeout(timer);
@@ -115,9 +102,31 @@ export function Categoria({ state }) {
         )
     }
 
+    const handleOnChange = (event) => {
+        { stateGlobal.colunas[0].categorias[0].data.titulo }
+        if (event.target.innerHTML === '')
+            setColor('#c06572')
+        else {
+            setColor('white')
+            // updateCategoria()
+        }
+    }
+
+    const debounce = (func, timeout = 700) => {
+        let timer;
+        return (...args) => {
+            clearTimeout(timer);
+            timer = setTimeout(() => { func.apply(this, args); }, timeout);
+        };
+    }
+
+    const processChange = debounce((e) => handleOnChange(e));
+
     return (
         <div>
-            <h1>Titulo da Categoria</h1>
+            <h1 onInput={processChange} suppressContentEditableWarning={true} contentEditable="true">
+                {currentCategoria.categoria}
+            </h1>
             <DragDropContext onDragEnd={onDragEnd}>
                 <Droppable droppableId={'droppableId'} >
                     {(provided) => (

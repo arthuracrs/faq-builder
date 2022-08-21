@@ -1,103 +1,33 @@
 import './styles.css'
 import iconeImage from './icone01.png'
 
-import { useState } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { Link } from "react-router-dom";
 
+import { StateContext } from '../../providers/stateGlobal';
+
 export function ListaDeCategorias() {
-    const getColunaIndex = (id) => {
-        for (const i in colunas)
-            if (colunas[i].id === id)
-                return i
+    const { stateGlobal, updateCategoria, getColunaIndex, getCategoriaIndex } = useContext(StateContext)
+    const [colunas, setColunas] = useState(stateGlobal.colunas)
 
-        return null
-    }
-
-    const getIconeIndex = (idColuna, idIcone) => {
-        for (const coluna in colunas)
-            if (colunas[coluna].id === idColuna)
-                for (const icone in colunas[coluna].data)
-                    if (colunas[coluna].data[icone].id === idIcone)
-                        return icone
-
-        return null
-    }
-
-    const newId = () => crypto.randomUUID()
-
-    const newIcone = () => ({ id: newId(), data: { titulo: "Titulo da pergunta" } })
-
-    const [colunas, setColunas] = useState(
-        [
-            {
-                id: newId(),
-                data: [
-                    newIcone(),
-                    newIcone(),
-                    newIcone()
-                ]
-            },
-            {
-                id: newId(),
-                data: [
-                    newIcone(),
-                    newIcone(),
-                    newIcone()
-                ]
-            }
-        ]
-    )
-
-    function Coluna({ droppableId }) {
-        return (
-            <Droppable droppableId={droppableId} key={droppableId}>
-                {(provided) => (
-                    <div
-                        {...provided.droppableProps}
-                        ref={provided.innerRef}
-                    >
-                        {colunas[getColunaIndex(droppableId)].data.map(
-                            (icone, index) => (
-                                <IconeDeCategoria state={colunas[getColunaIndex(droppableId)].data[getIconeIndex(droppableId, icone.id)].data} updateIconeData={updateIconeData} key={icone.id} index={index} id={icone.id} idColuna={droppableId} />
-                            ))
-                        }
-                        {provided.placeholder}
-                    </div>
-                )}
-            </Droppable>
-        )
-    }
-
-    const updateIconeData = (idIcone, idColuna, newData) => {
-        const copyObj = (obj) => JSON.parse(JSON.stringify(obj))
-
-        let newColunas = copyObj(colunas)
-
-        newColunas[getColunaIndex(idColuna)].data[getIconeIndex(idColuna, idIcone)].data = newData
-
-        setColunas(newColunas)
-    }
-
-    function IconeDeCategoria({ index, id, state, updateIconeData, idColuna }) {
+    function IconeDeCategoria({ index, idCategoria, idColuna }) {
 
         const copyObj = (obj) => JSON.parse(JSON.stringify(obj))
-
-        const [content, setContent] = useState(state)
+        const currentCategoria = stateGlobal.colunas[getColunaIndex(idColuna)].categorias[getCategoriaIndex(idColuna, idCategoria)]
+        const [content, setContent] = useState(currentCategoria)
         const [color, setColor] = useState('white')
 
         const handleOnChange = (event) => {
-
             if (event.target.innerHTML == '') {
                 setColor('#c06572')
-                console.log('fom')
-            }
-            else {
+            } else {
                 let newContent = copyObj(content)
                 newContent[event.target.id] = event.target.innerText
+
                 setContent(newContent)
                 setColor('white')
-                updateIconeData(id, idColuna, newContent)
+                updateCategoria(idColuna, idCategoria, newContent)
             }
         }
 
@@ -112,24 +42,44 @@ export function ListaDeCategorias() {
         const processChange = debounce((e) => handleOnChange(e));
 
         return (
-            <Draggable draggableId={id} index={index}>
-                {(provided) => (
+            <Draggable draggableId={idCategoria} index={index}>
 
+                {(provided) => (
                     <div className='iconeDeCategoria'
                         ref={provided.innerRef}
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
                     >
-                        <Link to="/invoices">
+                        <Link to={'/coluna/' + getColunaIndex(idColuna) + '/categoria/' + getCategoriaIndex(idColuna, idCategoria)}>
                             <img src={iconeImage} />
                         </Link>
-                        <h2 id="titulo" style={{ backgroundColor: color }} onInput={processChange} suppressContentEditableWarning={true} contentEditable="true">
-                            {content?.titulo}
+                        <h2 id="categoria" style={{ backgroundColor: color }} onInput={processChange} suppressContentEditableWarning={true} contentEditable="true">
+                            {content.categoria}
                         </h2>
                     </div>
-
                 )}
             </Draggable>
+        )
+    }
+
+    function Coluna({ droppableId }) {
+        return (
+            <Droppable droppableId={droppableId} key={droppableId}>
+                {(provided) => (
+                    <div
+                        {...provided.droppableProps}
+                        ref={provided.innerRef}
+                    >
+                        {colunas[getColunaIndex(droppableId)].categorias.map(
+                            (icone, index) => (
+                                <IconeDeCategoria key={icone.idCategoria} index={index} idCategoria={icone.idCategoria} idColuna={droppableId} />
+                                // <h1>icone de categoria</h1>
+                            ))
+                        }
+                        {provided.placeholder}
+                    </div>
+                )}
+            </Droppable>
         )
     }
 
@@ -160,12 +110,12 @@ export function ListaDeCategorias() {
             let targetColumn = tempColunas[getColunaIndex(source.droppableId)]
 
             let novaColuna = reorder(
-                targetColumn.data,
+                targetColumn.categorias,
                 source.index,
                 destination.index
             );
 
-            targetColumn.data = novaColuna
+            targetColumn.categorias = novaColuna
 
             setColunas(tempColunas)
         } else {
@@ -183,13 +133,14 @@ export function ListaDeCategorias() {
             setColunas(tempColunas)
         }
     }
+    console.log(stateGlobal)
     console.log(colunas)
     return (
         <div className='listaDeCategoria'>
             <h1>Escolha um Assunto</h1>
             <div className='linhaDeColunas'>
                 <DragDropContext onDragEnd={onDragEnd}>
-                    {colunas.map((x) => (<Coluna droppableId={x.id} key={x.id} />))}
+                    {colunas.map((x) => (<Coluna droppableId={x.idColuna} key={x.idColuna} />))}
                 </DragDropContext>
             </div>
         </div>

@@ -8,14 +8,17 @@ import {
     Route,
 } from "react-router-dom";
 
+import { StateProvider } from './providers/stateGlobal'
 
 export function App() {
     return (
         <BrowserRouter>
-            <Routes>
-                <Route path="/" element={<ListaDeCategorias />} />
-                <Route path="invoices" element={<Categoria />} />
-            </Routes>
+            <StateProvider>
+                <Routes>
+                    <Route path="/" element={<ListaDeCategorias />} />
+                    <Route path="/coluna/:indexColuna/categoria/:indexCategoria" element={<Categoria />} />
+                </Routes>
+            </StateProvider>
         </BrowserRouter>
     )
 
