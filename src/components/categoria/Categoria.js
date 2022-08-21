@@ -90,7 +90,6 @@ export function Categoria({ state }) {
                 setContent(newContent)
                 setColor('white')
                 updatePergunta(idPergunta, newContent)
-
             }
         }
 
@@ -117,7 +116,7 @@ export function Categoria({ state }) {
     }
 
     return (
-        <div className='categoriaIcone' >
+        <div>
             <h1>Titulo da Categoria</h1>
             <DragDropContext onDragEnd={onDragEnd}>
                 <Droppable droppableId={'droppableId'} >

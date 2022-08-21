@@ -3,6 +3,7 @@ import iconeImage from './icone01.png'
 
 import { useState } from 'react'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { Link } from "react-router-dom";
 
 export function ListaDeCategorias() {
     const getColunaIndex = (id) => {
@@ -113,16 +114,20 @@ export function ListaDeCategorias() {
         return (
             <Draggable draggableId={id} index={index}>
                 {(provided) => (
+
                     <div className='iconeDeCategoria'
                         ref={provided.innerRef}
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
                     >
-                        <img src={iconeImage} />
+                        <Link to="/invoices">
+                            <img src={iconeImage} />
+                        </Link>
                         <h2 id="titulo" style={{ backgroundColor: color }} onInput={processChange} suppressContentEditableWarning={true} contentEditable="true">
                             {content?.titulo}
                         </h2>
                     </div>
+
                 )}
             </Draggable>
         )
