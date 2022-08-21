@@ -4,14 +4,14 @@ import { useState, useContext, useEffect } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { useParams } from "react-router-dom";
 
+import { Pergunta } from './pergunta/Pergunta';
 import { StateContext } from '../../providers/stateGlobal';
 
 export function Categoria() {
     const copyObj = (obj) => JSON.parse(JSON.stringify(obj))
 
     const { indexColuna, indexCategoria } = useParams();
-    const { stateGlobal,  setStateGlobal,updateCategoria } = useContext(StateContext)
-    const [color, setColor] = useState('white')
+    const { stateGlobal,  setStateGlobal } = useContext(StateContext)
 
     const currentCategoria = stateGlobal.colunas[indexColuna].categorias[indexCategoria]
     const [categoria, setCategoria] = useState(currentCategoria)
@@ -65,72 +65,10 @@ export function Categoria() {
 
         setCategoria(newCategoria)
     }
-
-    function Pergunta({ idPergunta, updatePergunta, state }) {
-
-        const copyObj = (obj) => JSON.parse(JSON.stringify(obj))
-
-        const [pergunta, setPergunta] = useState(state)
-        const [color, setColor] = useState('white')
-
-        const handleOnChange = (event) => {
-
-            if (event.target.innerHTML === '')
-                setColor('#c06572')
-            else {
-                let newPergunta = copyObj(pergunta)
-                newPergunta[event.target.id] = event.target.innerText
-
-                setPergunta(newPergunta)
-                setColor('white')
-                updatePergunta(idPergunta, newPergunta)
-            }
-        }
-
-        const debounce = (func, timeout = 700) => {
-            let timer;
-            return (...args) => {
-                clearTimeout(timer);
-                timer = setTimeout(() => { func.apply(this, args); }, timeout);
-            };
-        }
-
-        const processChange = debounce((e) => handleOnChange(e));
-
-        return (
-            <div className='pergunta' style={{ backgroundColor: color }}   >
-                <h2 id="titulo" onInput={processChange} suppressContentEditableWarning={true} contentEditable="true">
-                    {pergunta.titulo}
-                </h2>
-                <p id="texto" onInput={processChange} suppressContentEditableWarning={true} contentEditable="true">
-                    {pergunta.resposta.texto}
-                </p>
-            </div>
-        )
-    }
-
-    const handleOnChange = (event) => {
-        if (event.target.innerHTML === '')
-            setColor('#c06572')
-        else {
-            setColor('white')
-            // updateCategoria()
-        }
-    }
-
-    const debounce = (func, timeout = 700) => {
-        let timer;
-        return (...args) => {
-            clearTimeout(timer);
-            timer = setTimeout(() => { func.apply(this, args); }, timeout);
-        };
-    }
-
-    const processChange = debounce((e) => handleOnChange(e));
  
     return (
         <div>
-            <h1 onInput={processChange} suppressContentEditableWarning={true} contentEditable="true">
+            <h1>
                 {currentCategoria.categoria}
             </h1>
             <DragDropContext onDragEnd={onDragEnd}>
