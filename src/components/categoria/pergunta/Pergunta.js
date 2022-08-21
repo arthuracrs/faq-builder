@@ -1,14 +1,26 @@
 import { useState, useContext, useEffect } from 'react';
+import { useParams } from "react-router-dom";
 
-export function Pergunta({ idPergunta, updatePergunta, state }) {
+import { StateContext } from '../../../providers/stateGlobal';
 
-    const copyObj = (obj) => JSON.parse(JSON.stringify(obj))
+export function Pergunta({ state, index }) {
+
+    const { indexColuna, indexCategoria } = useParams();
+    const { stateGlobal, setStateGlobal } = useContext(StateContext)
 
     const [pergunta, setPergunta] = useState(state)
     const [color, setColor] = useState('white')
 
+    useEffect(() => {
+        const newStateGlobal = stateGlobal
+        newStateGlobal.colunas[indexColuna].categorias[indexCategoria].perguntas[index] = pergunta
+        setStateGlobal(newStateGlobal)
+    }, [pergunta])
+
+    const copyObj = (obj) => JSON.parse(JSON.stringify(obj))
+
     const handleOnChange = (event) => {
-        
+
         if (event.target.innerHTML === '')
             setColor('#c06572')
         else {
@@ -17,7 +29,6 @@ export function Pergunta({ idPergunta, updatePergunta, state }) {
 
             setPergunta(newPergunta)
             setColor('white')
-            updatePergunta(idPergunta, newPergunta)
         }
         event.target.blur()
     }

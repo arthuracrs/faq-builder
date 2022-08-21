@@ -11,8 +11,8 @@ export function Categoria() {
     const copyObj = (obj) => JSON.parse(JSON.stringify(obj))
 
     const { indexColuna, indexCategoria } = useParams();
-    const { stateGlobal,  setStateGlobal } = useContext(StateContext)
-
+    const { stateGlobal, setStateGlobal } = useContext(StateContext)
+    
     const currentCategoria = stateGlobal.colunas[indexColuna].categorias[indexCategoria]
     const [categoria, setCategoria] = useState(currentCategoria)
 
@@ -21,21 +21,6 @@ export function Categoria() {
         newStateGlobal.colunas[indexColuna].categorias[indexCategoria] = categoria
         setStateGlobal(newStateGlobal)
     }, [categoria])
-
-    const updatePergunta = (idPergunta, content) => {
-        const getPerguntaIndex = (array, id) => {
-            for (let i = 0; i < array.length; i++)
-                if (array[i].idPergunta === id) return i
-
-            return undefined
-        }
-
-        let newCategoria = copyObj(categoria)
-
-        newCategoria.perguntas[getPerguntaIndex(categoria.perguntas, idPergunta)] = content
-
-        setCategoria(newCategoria)
-    }
 
     const onDragEnd = result => {
 
@@ -88,7 +73,7 @@ export function Categoria() {
                                             {...provided.draggableProps}
                                             {...provided.dragHandleProps}
                                         >
-                                            <Pergunta idPergunta={x.idPergunta} updatePergunta={updatePergunta} key={x.idPergunta} state={x} />
+                                            <Pergunta idPergunta={x.idPergunta} index={index} key={x.idPergunta} state={x} />
                                         </div>
                                     )}
                                 </Draggable>

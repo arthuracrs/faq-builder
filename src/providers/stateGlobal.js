@@ -131,10 +131,9 @@ export const StateProvider = (props) => {
             return
         }
 
-        const newStateGlobal = copyObj(stateGlobal)
-        newStateGlobal.colunas[getColunaIndex(idColuna)].categorias[getCategoriaIndex(idColuna, idCategoria)] = categoria
+        stateGlobal.colunas[getColunaIndex(idColuna)].categorias[getCategoriaIndex(idColuna, idCategoria)] = categoria
 
-        setStateGlobal(newStateGlobal)
+        setStateGlobal(stateGlobal)
     }
 
     return (
