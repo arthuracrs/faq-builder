@@ -6,7 +6,7 @@ import { Categoria } from './components/categoria/Categoria';
 export function App() {
     return (
         <>
-            <ListaDeCategorias />
+            <Categoria />
         </>
     )
 

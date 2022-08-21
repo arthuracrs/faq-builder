@@ -16,8 +16,8 @@ export function ListaDeCategorias() {
     const getIconeIndex = (idColuna, idIcone) => {
         for (const coluna in colunas)
             if (colunas[coluna].id === idColuna)
-                for (const icone in colunas[coluna].data) 
-                    if (colunas[coluna].data[icone].id === idIcone) 
+                for (const icone in colunas[coluna].data)
+                    if (colunas[coluna].data[icone].id === idIcone)
                         return icone
 
         return null
@@ -25,7 +25,7 @@ export function ListaDeCategorias() {
 
     const newId = () => crypto.randomUUID()
 
-    const newIcone = () => ({ id: newId(), data: {} })
+    const newIcone = () => ({ id: newId(), data: { titulo: "Titulo da pergunta" } })
 
     const [colunas, setColunas] = useState(
         [
@@ -72,8 +72,6 @@ export function ListaDeCategorias() {
         const copyObj = (obj) => JSON.parse(JSON.stringify(obj))
 
         let newColunas = copyObj(colunas)
-
-        console.log(getIconeIndex(idColuna, idIcone))
 
         newColunas[getColunaIndex(idColuna)].data[getIconeIndex(idColuna, idIcone)].data = newData
 
@@ -122,7 +120,7 @@ export function ListaDeCategorias() {
                     >
                         <img src={iconeImage} />
                         <h2 id="titulo" style={{ backgroundColor: color }} onInput={processChange} suppressContentEditableWarning={true} contentEditable="true">
-                            {content?.titulo || "Titulo da pergunta"}
+                            {content?.titulo}
                         </h2>
                     </div>
                 )}
@@ -180,7 +178,7 @@ export function ListaDeCategorias() {
             setColunas(tempColunas)
         }
     }
-
+    console.log(colunas)
     return (
         <div className='listaDeCategoria'>
             <h1>Escolha um Assunto</h1>
