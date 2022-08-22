@@ -1,6 +1,8 @@
 import { useContext } from 'react'
 import parse from 'html-react-parser'
 
+import './styles.css'
+
 import { StateContext } from '../../providers/stateGlobal';
 
 export function ViewJson(params) {
@@ -22,16 +24,16 @@ export function ViewJson(params) {
             final.push(col2[i])
     }
 
-    final = JSON.stringify(final, undefined, 2)
+    final = JSON.stringify(final, undefined, 4)
 
     const copyToClipboard = () => {
         navigator.clipboard.writeText(final);
     }
 
     return (
-        <>
+        <div className='viewJson'>
             <button onClick={copyToClipboard}>Copiar</button>
             {parse(`<pre>${final}</pre> `)}
-        </>
+        </div>
     )
 }

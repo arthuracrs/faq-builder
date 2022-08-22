@@ -22,9 +22,10 @@ export function Pergunta({ state, index, draggableId }) {
 
     const handleOnChange = (event) => {
 
-        if (event.target.innerHTML === '')
-            setColor('#c06572')
-        else {
+        if (event.target.innerText == '') {
+            console.log(event.target.innerText)
+            event.target.innerText = 'Vazio'
+        } else {
             if (event.target.id == 'texto') {
                 pergunta.resposta.texto = event.target.innerText
             } else {
@@ -61,11 +62,11 @@ export function Pergunta({ state, index, draggableId }) {
                             {pergunta.titulo}
                         </h2>
 
-                        <div id="texto" onInput={processChange} suppressContentEditableWarning={true} contentEditable="true">
-                            {parse(`<p>${pergunta.resposta.texto}</p>`)}
+                        <div className='pergunta-resposta' id="texto" onInput={processChange} suppressContentEditableWarning={true} contentEditable="true">
+                            {(`${ pergunta.resposta.texto}`)}
                         </div>
                     </div>
-                    
+
                 </div>
             )}
         </Draggable>

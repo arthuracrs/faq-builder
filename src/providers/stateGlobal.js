@@ -1,8 +1,9 @@
 import { createContext, useState } from "react";
+import { v4 as uuidv4 } from 'uuid';
 
 import faqjson from './faq.json'
 
-const newId = () => crypto.randomUUID()
+const newId = () => uuidv4()
 
 const categoriaFactory = (categoria) => {
     return {

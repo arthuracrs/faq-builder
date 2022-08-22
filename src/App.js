@@ -4,12 +4,12 @@ import { ListaDeCategorias } from './components/listaDeCategorias/listaDeCategor
 import { Categoria } from './components/categoria/Categoria';
 
 import { ViewJson } from './components/json/ViewJson'
+import { Menu } from './components/menu/Menu'
 
 import {
     BrowserRouter,
     Routes,
-    Route,
-    Link
+    Route
 } from "react-router-dom";
 
 import { StateProvider } from './providers/stateGlobal'
@@ -19,8 +19,7 @@ export function App() {
         <BrowserRouter>
             <StateProvider>
                 <div>
-                    <Link to="/json">JSON</Link>
-                    <Link to="/">home</Link>
+                    <Menu />
                     <Routes>
                         <Route path="/" element={<ListaDeCategorias />} />
                         <Route path="/json" element={<ViewJson />} />
