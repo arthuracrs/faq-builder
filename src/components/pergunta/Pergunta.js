@@ -57,7 +57,7 @@ export function Pergunta({ state, index, deletePergunta }) {
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
                 >
-                    <div className='pergunta-box' style={{ backgroundColor: color }}   >
+                    <div className='pergunta-box' style={{ backgroundColor: color }}>
                         <button onClick={deletePergunta}> delete </button>
                         <h2 id="titulo" onInput={processChange} suppressContentEditableWarning={true} contentEditable="true">
                             {pergunta.titulo}

@@ -9,7 +9,7 @@ import { StateContext } from '../../providers/stateGlobal';
 
 export function ListaDeCategorias() {
     const { categoriaFactory, stateGlobal, setStateGlobal, getColunaIndex, getCategoriaIndex } = useContext(StateContext)
-    
+
     const [colunas, setColunas] = useState(stateGlobal.colunas)
     const [update, setUpdate] = useState(true)
 
@@ -54,7 +54,9 @@ export function ListaDeCategorias() {
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
                     >
+
                         <div className='iconeDeCategoria-box'>
+                            <button onClick={() => deleteCategoria(idColuna, index)}>X</button>
                             <Link to={'/coluna/' + getColunaIndex(idColuna) + '/categoria/' + getCategoriaIndex(idColuna, idCategoria)}>
                                 <img src={iconeImage} />
                             </Link>
@@ -68,7 +70,7 @@ export function ListaDeCategorias() {
         )
     }
 
-    function Coluna({ droppableId }) {
+    function Coluna({ droppableId, deleteCategoria }) {
         return (
             <Droppable droppableId={droppableId} key={droppableId}>
                 {(provided) => (
@@ -78,7 +80,7 @@ export function ListaDeCategorias() {
                     >
                         {colunas[getColunaIndex(droppableId)].categorias.map(
                             (icone, index) => (
-                                <IconeDeCategoria key={icone.idCategoria} index={index} idCategoria={icone.idCategoria} idColuna={droppableId} />
+                                <IconeDeCategoria deleteCategoria={deleteCategoria} key={icone.idCategoria} index={index} idCategoria={icone.idCategoria} idColuna={droppableId} />
                             ))
                         }
                         {provided.placeholder}
@@ -136,13 +138,20 @@ export function ListaDeCategorias() {
         setUpdate(!update)
     }
 
+    const deleteCategoria = (idCategoria, index) => {
+        const k = colunas[getColunaIndex(idCategoria)].categorias.splice(index, 1);
+        console.log(k)
+        setColunas[colunas]
+        setUpdate(!update)
+    }
+
     return (
         <div className='listaDeCategoria'>
             <h1>Escolha um Assunto</h1>
             <button onClick={addCategoria}>Add Categoria</button>
             <div className='linhaDeColunas'>
                 <DragDropContext onDragEnd={onDragEnd}>
-                    {colunas.map((x) => (<Coluna droppableId={x.idColuna} key={x.idColuna} />))}
+                    {colunas.map((x) => (<Coluna deleteCategoria={deleteCategoria} droppableId={x.idColuna} key={x.idColuna} />))}
                 </DragDropContext>
             </div>
         </div>
