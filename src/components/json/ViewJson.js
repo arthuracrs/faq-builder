@@ -33,7 +33,9 @@ export function ViewJson(params) {
     return (
         <div className='viewJson'>
             <button onClick={copyToClipboard}>Copiar</button>
-            {parse(`<pre>${final}</pre> `)}
+            <div className='json-box'>
+                {parse(`<pre>${final}</pre> `)}
+            </div>
         </div>
     )
 }

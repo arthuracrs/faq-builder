@@ -56,7 +56,7 @@ export function ListaDeCategorias() {
                     >
 
                         <div className='iconeDeCategoria-box'>
-                            <button onClick={() => deleteCategoria(idColuna, index)}>X</button>
+                            <button onClick={() => deleteCategoria(idColuna, index)}>delete</button>
                             <Link to={'/coluna/' + getColunaIndex(idColuna) + '/categoria/' + getCategoriaIndex(idColuna, idCategoria)}>
                                 <img src={iconeImage} />
                             </Link>
