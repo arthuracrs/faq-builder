@@ -58,6 +58,12 @@ export function Categoria() {
         setUpdate(!update)
     }
 
+    const deletePergunta = (index) => {
+        categoria.perguntas.splice(index, 1);
+        setCategoria(categoria)
+        setUpdate(!update)
+    }
+
     return (
         <div className='categoria'>
             <h1>
@@ -72,7 +78,7 @@ export function Categoria() {
                             ref={provided.innerRef}
                         >
                             {categoria.perguntas.map((x, index) => (
-                                <Pergunta state={x} index={index} key={x.idPergunta} />
+                                <Pergunta deletePergunta={deletePergunta} state={x} index={index} key={x.idPergunta} />
                             ))}
                             {provided.placeholder}
                         </div>

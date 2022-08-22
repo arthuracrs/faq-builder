@@ -7,7 +7,7 @@ import './styles.css'
 
 import { StateContext } from '../../providers/stateGlobal';
 
-export function Pergunta({ state, index, draggableId }) {
+export function Pergunta({ state, index, deletePergunta }) {
 
     const { indexColuna, indexCategoria } = useParams();
     const { stateGlobal, setStateGlobal } = useContext(StateContext)
@@ -58,6 +58,7 @@ export function Pergunta({ state, index, draggableId }) {
                     {...provided.dragHandleProps}
                 >
                     <div className='pergunta-box' style={{ backgroundColor: color }}   >
+                        <button onClick={deletePergunta}> delete </button>
                         <h2 id="titulo" onInput={processChange} suppressContentEditableWarning={true} contentEditable="true">
                             {pergunta.titulo}
                         </h2>
