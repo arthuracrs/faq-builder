@@ -27,7 +27,12 @@ export function ViewJson(params) {
     final = JSON.stringify(final, undefined, 4)
 
     const copyToClipboard = () => {
-        navigator.clipboard.writeText(final);
+        navigator?.clipboard?.writeText(final).then(() => {
+            // alert("successfully copied");
+          })
+          .catch(() => {
+            alert("something went wrong");
+          });
     }
 
     return (

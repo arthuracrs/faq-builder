@@ -16,7 +16,6 @@ export function ListaDeCategorias() {
     function IconeDeCategoria({ index, idCategoria, idColuna }) {
         const currentCategoria = stateGlobal.colunas[getColunaIndex(idColuna)].categorias[getCategoriaIndex(idColuna, idCategoria)]
         const [iconeDeCategoria, setIconeDeCategoria] = useState(currentCategoria)
-        const [color, setColor] = useState('white')
 
         useEffect(() => {
             stateGlobal.colunas[getColunaIndex(idColuna)].categorias[getCategoriaIndex(idColuna, idCategoria)].categoria = iconeDeCategoria.categoria
@@ -24,13 +23,15 @@ export function ListaDeCategorias() {
         }, [iconeDeCategoria])
 
         const handleOnChange = (event) => {
+
+      
+
             if (event.target.innerHTML == '') {
-                setColor('#c06572')
+                event.target.innerText = 'Vazio'
             } else {
                 iconeDeCategoria[event.target.id] = event.target.innerText
 
                 setIconeDeCategoria(iconeDeCategoria)
-                setColor('white')
             }
 
             event.target.blur()
@@ -60,7 +61,7 @@ export function ListaDeCategorias() {
                             <Link to={'/coluna/' + getColunaIndex(idColuna) + '/categoria/' + getCategoriaIndex(idColuna, idCategoria)}>
                                 <img src={iconeImage} />
                             </Link>
-                            <h2 id="categoria" style={{ backgroundColor: color }} onInput={processChange} suppressContentEditableWarning={true} contentEditable="true">
+                            <h2 id="categoria" onInput={processChange} suppressContentEditableWarning={true} contentEditable="true">
                                 {iconeDeCategoria.categoria}
                             </h2>
                         </div>
