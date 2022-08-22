@@ -32,12 +32,34 @@ const respostaFactory = (texto) => {
 
 export const StateProvider = (props) => {
 
+    const data = JSON.parse(JSON.stringify({
+        "idCategoria": "64",
+        "categoria": "Pedágios",
+        "perguntas": [
+            {
+                "idPergunta": "191",
+                "titulo": "Como passo em pedágios com o adesivo (tag) Veloe?",
+                "resposta": {
+                    "idResposta": "189",
+                    "texto": "<ul><li>Ative e cole o adesivo (tag) no parabrisa do veículo;</li><li>Utilize as pistas identificadas com a placa de cobrança automática;</li><li>Ao se aproximar da cabine automática, reduza a velocidade pra 40 km/h pra leitura do adesivo (tag). Se o veículo tem mais de 6 eixos, recomendamos não exceder 20km/h.</li><li>Atenção aos sinais luminosos e sonoros da pista: eles indicam se sua passagem foi liberada ou não.</li></ul><br>Se surgir algum problema, pare e siga as orientações dos agentes da pista."
+                }
+            },
+            {
+                "idPergunta": "192",
+                "titulo": "O que fazer se receber uma multa por evasão ao utilizar Veloe em uma praça de pedágio?",
+                "resposta": {
+                    "idResposta": "190",
+                    "texto": "Nós não temos competência legal ou poder pra aplicar ou revogar multas de trânsito, então fique atento: se houver sinal e bloqueio na praça de pedágio, não saia sem realizar o pagamento.<br><br>Teve algum problema e precisar entender a situação da conta Veloe no momento da evasão? Nós analisamos pra você, entre em contato com a gente pela Central de Relacionamento 3003 3510 (capitais e regiões metropolitanas) ou 0800 208 3510 (demais localidades), todos os dias, 24 horas."
+                }
+            }
+        ]
+    }))
+
     const [stateGlobal, setStateGlobal] = useState({
         colunas: [{
             idColuna: newId(),
             categorias: [
-                categoriaFactory('Sobre o adesivo'),
-                categoriaFactory('Sua conta')
+                data
             ]
         },
             {
@@ -56,8 +78,8 @@ export const StateProvider = (props) => {
     const pergunta2 = perguntaFactory('caaaaaaaaaaaaaa')
     pergunta2.resposta = respostaFactory('bbbbbbbb')
 
-    stateGlobal.colunas[0].categorias[0].perguntas.push(pergunta1)
-    stateGlobal.colunas[0].categorias[0].perguntas.push(pergunta2)
+    // stateGlobal.colunas[0].categorias[0].perguntas.push(pergunta1)
+    // stateGlobal.colunas[0].categorias[0].perguntas.push(pergunta2)
 
     const getColunaIndex = (idColuna) => {
         const colunas = stateGlobal.colunas

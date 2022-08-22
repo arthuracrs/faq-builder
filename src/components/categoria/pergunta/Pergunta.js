@@ -1,5 +1,6 @@
 import { useState, useContext, useEffect } from 'react';
 import { useParams } from "react-router-dom";
+import parse from 'html-react-parser'
 
 import { StateContext } from '../../../providers/stateGlobal';
 
@@ -21,9 +22,9 @@ export function Pergunta({ state, index }) {
         if (event.target.innerHTML === '')
             setColor('#c06572')
         else {
-            if(event.target.id == 'texto'){
+            if (event.target.id == 'texto') {
                 pergunta.resposta.texto = event.target.innerText
-            }else{
+            } else {
                 pergunta.titulo = event.target.innerText
             }
 
@@ -48,9 +49,10 @@ export function Pergunta({ state, index }) {
             <h2 id="titulo" onInput={processChange} suppressContentEditableWarning={true} contentEditable="true">
                 {pergunta.titulo}
             </h2>
-            <p id="texto" onInput={processChange} suppressContentEditableWarning={true} contentEditable="true">
-                {pergunta.resposta.texto}
-            </p>
+
+            <div id="texto" onInput={processChange} suppressContentEditableWarning={true} contentEditable="true">
+                {parse(`<p>${pergunta.resposta.texto}</p>`)}
+            </div>
         </div>
     )
 }
