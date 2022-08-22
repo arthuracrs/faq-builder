@@ -52,7 +52,7 @@ export function Categoria() {
         setCategoria(newCategoria)
     }
 
-    function addPergunta() {
+    const addPergunta = () => {
         categoria.perguntas.push(perguntaFactory())
         setCategoria(categoria)
         setUpdate(!update)

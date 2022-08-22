@@ -5,13 +5,11 @@ import faqjson from './faq.json'
 
 const newId = () => uuidv4()
 
-const categoriaFactory = (categoria) => {
-    return {
-        idCategoria: newId(),
-        categoria: categoria,
-        perguntas: []
-    }
-}
+const categoriaFactory = () => ({
+    idCategoria: newId(),
+    categoria: 'Nova Categoria',
+    perguntas: []
+})
 
 const perguntaFactory = () => ({
     idPergunta: newId(),
@@ -69,14 +67,15 @@ export const StateProvider = (props) => {
     }
 
     const [stateGlobal, setStateGlobal] = useState({
-        colunas: [{
-            idColuna: newId(),
-            categorias: col1
-        },
-        {
-            idColuna: newId(),
-            categorias: col2
-        }
+        colunas: [
+            {
+                idColuna: newId(),
+                categorias: col1
+            },
+            {
+                idColuna: newId(),
+                categorias: col2
+            }
         ]
     })
 
@@ -104,7 +103,7 @@ export const StateProvider = (props) => {
     }
 
     return (
-        <StateContext.Provider value={{ perguntaFactory, newId, stateGlobal, getColunaIndex, getCategoriaIndex, setStateGlobal }}>
+        <StateContext.Provider value={{ categoriaFactory, perguntaFactory, newId, stateGlobal, getColunaIndex, getCategoriaIndex, setStateGlobal }}>
             {props.children}
         </StateContext.Provider>
     )

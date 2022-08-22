@@ -8,8 +8,10 @@ import { Link } from "react-router-dom";
 import { StateContext } from '../../providers/stateGlobal';
 
 export function ListaDeCategorias() {
-    const { stateGlobal, setStateGlobal, getColunaIndex, getCategoriaIndex } = useContext(StateContext)
+    const { categoriaFactory, stateGlobal, setStateGlobal, getColunaIndex, getCategoriaIndex } = useContext(StateContext)
+    
     const [colunas, setColunas] = useState(stateGlobal.colunas)
+    const [update, setUpdate] = useState(true)
 
     function IconeDeCategoria({ index, idCategoria, idColuna }) {
         const currentCategoria = stateGlobal.colunas[getColunaIndex(idColuna)].categorias[getCategoriaIndex(idColuna, idCategoria)]
@@ -127,9 +129,17 @@ export function ListaDeCategorias() {
     }
     console.log(stateGlobal)
     console.log(colunas)
+
+    const addCategoria = () => {
+        colunas[0].categorias.push(categoriaFactory())
+        setColunas(colunas)
+        setUpdate(!update)
+    }
+
     return (
         <div className='listaDeCategoria'>
             <h1>Escolha um Assunto</h1>
+            <button onClick={addCategoria}>Add Categoria</button>
             <div className='linhaDeColunas'>
                 <DragDropContext onDragEnd={onDragEnd}>
                     {colunas.map((x) => (<Coluna droppableId={x.idColuna} key={x.idColuna} />))}
