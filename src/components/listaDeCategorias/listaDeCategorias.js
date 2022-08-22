@@ -30,6 +30,8 @@ export function ListaDeCategorias() {
                 setIconeDeCategoria(iconeDeCategoria)
                 setColor('white')
             }
+
+            event.target.blur()
         }
 
         const debounce = (func, timeout = 700) => {
