@@ -1,15 +1,44 @@
-.listaDeCategoria h1 {
-    padding: 10px;
+
+.listaDeCategoria {
+    padding: 40px 10%;
     font-family: sans-serif;
     color: rgb(36, 32, 107);
+    background-color: whitesmoke;
 }
 
-.listaDeCategoria .linhaDeColunas{
+.listaDeCategoria h1 {
+    padding: 10px;
+    margin-left: 5%;
+    
+}
+
+.linhaDeColunas{
+    display: flex;
+    justify-content: center;    
+}
+
+.listaDeCategoria .linhaDeColunas {
     display: grid;
-    gap: 10px;
-    grid-auto-flow: column;
+    grid-template-columns: 40% 40%;
 }
 
-.iconeDeCategoria{
-    width: 500px;
+.iconeDeCategoria {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    /* background-color: blue; */
+    /* margin: 10px; */
+}
+
+.iconeDeCategoria-box {
+    box-shadow: 0 0 30px rgba(36, 32, 107, 0.199);
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    place-items: center;
+    overflow: hidden;
+    border: 2px solid rgb(36, 32, 107);
+    border-radius: 10px;
+    background-color: white;
+    padding: 20px;
 }

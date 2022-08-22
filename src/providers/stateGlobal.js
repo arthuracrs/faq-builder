@@ -52,32 +52,41 @@ const faqParse = (json) => {
     return data
 }
 
+
+
 export const StateContext = createContext({})
 
 export const StateProvider = (props) => {
 
     const data = faqParse(faqjson)
+    const col1 = []
+    const col2 = []
+
+    for (let i = 0; i < data.length; i++) {
+        if(i%2 == 0){
+            col1.push(data[i])
+        }else{
+            col2.push(data[i])
+        }
+    }
 
     const [stateGlobal, setStateGlobal] = useState({
         colunas: [{
             idColuna: newId(),
-            categorias: data
+            categorias: col1
         },
         {
             idColuna: newId(),
-            categorias: [
-                categoriaFactory('Sobre o adesivo'),
-                categoriaFactory('Sua conta')
-            ]
+            categorias: col2
         }
         ]
     })
 
-    const pergunta1 = perguntaFactory('como é q faz aquilo?')
-    pergunta1.resposta = respostaFactory('ooddodo')
+    // const pergunta1 = perguntaFactory('como é q faz aquilo?')
+    // pergunta1.resposta = respostaFactory('ooddodo')
 
-    const pergunta2 = perguntaFactory('caaaaaaaaaaaaaa')
-    pergunta2.resposta = respostaFactory('bbbbbbbb')
+    // const pergunta2 = perguntaFactory('caaaaaaaaaaaaaa')
+    // pergunta2.resposta = respostaFactory('bbbbbbbb')
 
     // stateGlobal.colunas[0].categorias[0].perguntas.push(pergunta1)
     // stateGlobal.colunas[0].categorias[0].perguntas.push(pergunta2)

@@ -52,12 +52,14 @@ export function ListaDeCategorias() {
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
                     >
-                        <Link to={'/coluna/' + getColunaIndex(idColuna) + '/categoria/' + getCategoriaIndex(idColuna, idCategoria)}>
-                            <img src={iconeImage} />
-                        </Link>
-                        <h2 id="categoria" style={{ backgroundColor: color }} onInput={processChange} suppressContentEditableWarning={true} contentEditable="true">
-                            {iconeDeCategoria.categoria}
-                        </h2>
+                        <div className='iconeDeCategoria-box'>
+                            <Link to={'/coluna/' + getColunaIndex(idColuna) + '/categoria/' + getCategoriaIndex(idColuna, idCategoria)}>
+                                <img src={iconeImage} />
+                            </Link>
+                            <h2 id="categoria" style={{ backgroundColor: color }} onInput={processChange} suppressContentEditableWarning={true} contentEditable="true">
+                                {iconeDeCategoria.categoria}
+                            </h2>
+                        </div>
                     </div>
                 )}
             </Draggable>

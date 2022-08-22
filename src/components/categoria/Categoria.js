@@ -4,7 +4,7 @@ import { useState, useContext, useEffect } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { useParams } from "react-router-dom";
 
-import { Pergunta } from './pergunta/Pergunta';
+import { Pergunta } from '../pergunta/Pergunta';
 import { StateContext } from '../../providers/stateGlobal';
 
 export function Categoria() {
@@ -51,37 +51,25 @@ export function Categoria() {
     }
  
     return (
-        <div>
+        <div className='categoria'>
             <h1>
                 {currentCategoria.categoria}
             </h1>
             <DragDropContext onDragEnd={onDragEnd}>
                 <Droppable droppableId={'droppableId'} >
                     {(provided) => (
-                        <div
+                        <div className='perguntas'
                             {...provided.droppableProps}
                             ref={provided.innerRef}
                         >
                             {categoria.perguntas.map((x, index) => (
-
-                                <Draggable draggableId={x.idPergunta} index={index} key={x.idPergunta}>
-                                    {(provided) => (
-                                        <div
-                                            className='pergunta'
-                                            ref={provided.innerRef}
-                                            {...provided.draggableProps}
-                                            {...provided.dragHandleProps}
-                                        >
-                                            <Pergunta idPergunta={x.idPergunta} index={index} key={x.idPergunta} state={x} />
-                                        </div>
-                                    )}
-                                </Draggable>
+                                <Pergunta state={x} index={index} key={x.idPergunta} />
                             ))}
+                            {provided.placeholder}
                         </div>
                     )}
                 </Droppable>
             </DragDropContext>
-
         </div>
     )
 }
