@@ -9,6 +9,7 @@ import {
     BrowserRouter,
     Routes,
     Route,
+    Link
 } from "react-router-dom";
 
 import { StateProvider } from './providers/stateGlobal'
@@ -17,11 +18,15 @@ export function App() {
     return (
         <BrowserRouter>
             <StateProvider>
-                <Routes>
-                    <Route path="/" element={<ListaDeCategorias />} />
-                    <Route path="/json" element={<ViewJson />} />
-                    <Route path="/coluna/:indexColuna/categoria/:indexCategoria" element={<Categoria />} />
-                </Routes>
+                <div>
+                    <Link to="/json">JSON</Link>
+                    <Link to="/">home</Link>
+                    <Routes>
+                        <Route path="/" element={<ListaDeCategorias />} />
+                        <Route path="/json" element={<ViewJson />} />
+                        <Route path="/coluna/:indexColuna/categoria/:indexCategoria" element={<Categoria />} />
+                    </Routes>
+                </div>
             </StateProvider>
         </BrowserRouter>
     )

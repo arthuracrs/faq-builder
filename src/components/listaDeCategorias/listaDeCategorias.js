@@ -11,6 +11,8 @@ export function ListaDeCategorias() {
     const { stateGlobal, setStateGlobal, getColunaIndex, getCategoriaIndex } = useContext(StateContext)
     const [colunas, setColunas] = useState(stateGlobal.colunas)
 
+    useEffect(()=>{})
+
     function IconeDeCategoria({ index, idCategoria, idColuna }) {
         const currentCategoria = stateGlobal.colunas[getColunaIndex(idColuna)].categorias[getCategoriaIndex(idColuna, idCategoria)]
         const [iconeDeCategoria, setIconeDeCategoria] = useState(currentCategoria)
