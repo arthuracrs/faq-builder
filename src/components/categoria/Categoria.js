@@ -11,12 +11,14 @@ export function Categoria() {
     const copyObj = (obj) => JSON.parse(JSON.stringify(obj))
 
     const { indexColuna, indexCategoria } = useParams();
-    const { stateGlobal, setStateGlobal } = useContext(StateContext)
-    
+    const { stateGlobal, perguntaFactory, setStateGlobal, newId } = useContext(StateContext)
+
     const currentCategoria = stateGlobal.colunas[indexColuna].categorias[indexCategoria]
     const [categoria, setCategoria] = useState(currentCategoria)
+    const [update, setUpdate] = useState(true)
 
-    useEffect(()=>{
+    useEffect(() => {
+        setCategoria(categoria)
         stateGlobal.colunas[indexColuna].categorias[indexCategoria] = categoria
         setStateGlobal(stateGlobal)
     }, [categoria])
@@ -49,12 +51,19 @@ export function Categoria() {
 
         setCategoria(newCategoria)
     }
- 
+
+    function addPergunta() {
+        categoria.perguntas.push(perguntaFactory())
+        setCategoria(categoria)
+        setUpdate(!update)
+    }
+
     return (
         <div className='categoria'>
             <h1>
                 {currentCategoria.categoria}
             </h1>
+            <button onClick={addPergunta}>Add Pergunta</button>
             <DragDropContext onDragEnd={onDragEnd}>
                 <Droppable droppableId={'droppableId'} >
                     {(provided) => (

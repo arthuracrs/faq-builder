@@ -13,16 +13,15 @@ const categoriaFactory = (categoria) => {
     }
 }
 
-const perguntaFactory = (titulo) => {
-    return {
-        idPergunta: newId(),
-        titulo: titulo,
-        resposta: {
-            idResposta: newId(),
-            texto: "Se colou errado ou precisa substituir o adesivo (tag), você precisa fazer o bloqueio do antigo e pedir um novo. Acesse “Meus adesivos” e clique em “Solicitar adesivos”."
-        }
+const perguntaFactory = () => ({
+    idPergunta: newId(),
+    titulo: 'Nova Pergunta',
+    resposta: {
+        idResposta: newId(),
+        texto: "Nova Resposta"
     }
-}
+})
+
 
 const respostaFactory = (texto) => {
     return {
@@ -53,8 +52,6 @@ const faqParse = (json) => {
     return data
 }
 
-
-
 export const StateContext = createContext({})
 
 export const StateProvider = (props) => {
@@ -64,9 +61,9 @@ export const StateProvider = (props) => {
     const col2 = []
 
     for (let i = 0; i < data.length; i++) {
-        if(i%2 == 0){
+        if (i % 2 == 0) {
             col1.push(data[i])
-        }else{
+        } else {
             col2.push(data[i])
         }
     }
@@ -82,15 +79,6 @@ export const StateProvider = (props) => {
         }
         ]
     })
-
-    // const pergunta1 = perguntaFactory('como é q faz aquilo?')
-    // pergunta1.resposta = respostaFactory('ooddodo')
-
-    // const pergunta2 = perguntaFactory('caaaaaaaaaaaaaa')
-    // pergunta2.resposta = respostaFactory('bbbbbbbb')
-
-    // stateGlobal.colunas[0].categorias[0].perguntas.push(pergunta1)
-    // stateGlobal.colunas[0].categorias[0].perguntas.push(pergunta2)
 
     const getColunaIndex = (idColuna) => {
         const colunas = stateGlobal.colunas
@@ -115,25 +103,8 @@ export const StateProvider = (props) => {
         return null
     }
 
-    const updateCategoria = (idColuna, idCategoria, categoria) => {
-        console.log('update categoria')
-        if (getColunaIndex(idColuna) === null) {
-            console.log('coluna ' + idColuna + ' n existe')
-            return
-        }
-
-        if (getCategoriaIndex(idColuna, idCategoria) === null) {
-            console.log('categoria ' + idCategoria + ' n existe')
-            return
-        }
-
-        stateGlobal.colunas[getColunaIndex(idColuna)].categorias[getCategoriaIndex(idColuna, idCategoria)] = categoria
-
-        setStateGlobal(stateGlobal)
-    }
-
     return (
-        <StateContext.Provider value={{ stateGlobal, getColunaIndex, getCategoriaIndex, setStateGlobal, updateCategoria }}>
+        <StateContext.Provider value={{ perguntaFactory, newId, stateGlobal, getColunaIndex, getCategoriaIndex, setStateGlobal }}>
             {props.children}
         </StateContext.Provider>
     )
